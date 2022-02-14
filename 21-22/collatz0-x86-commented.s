@@ -25,7 +25,7 @@ collatz:
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register %rbp
 	subq	$48, %rsp
-	movl	%edi, -4(%rbp)
+	movl	%edi, -4(%rbp)		#
 	movl	%esi, -8(%rbp)
 	movl	%edx, -12(%rbp)
 	movl	%ecx, -16(%rbp)
@@ -40,24 +40,24 @@ collatz:
 	movl	%eax, div
 	movq	-32(%rbp), %rax
 	movq	%rax, array
-	movb	$0, -33(%rbp)
+	movb	$0, -33(%rbp)		# Copies "0" (false) to -33 byte below the base pointer (the boolean to be returned by the function)
 	cmpl	$1, -4(%rbp)
 	jl	.LBB0_2
 	movl	-4(%rbp), %edi
 	callq	collatz_recurse
-	andb	$1, %al
-	movb	%al, -33(%rbp)
+	andb	$1, %al			# Performs bitwise and operation on %al with 1, clearing all bits to 0 except for the least significant bit, which may be 1 (true) or 0 (false)
+	movb	%al, -33(%rbp)		# Copies value of %al to -33 byte below base pointer (the return boolean)	
 .LBB0_2:
-	movl	array_length, %ecx
-	movq	-24(%rbp), %rax
-	movl	%ecx, (%rax)
-	movb	-33(%rbp), %al
-	andb	$1, %al
-	movzbl	%al, %eax
-	addq	$48, %rsp
-	popq	%rbp
+	movl	array_length, %ecx	# %ecx = array_length
+	movq	-24(%rbp), %rax		# %rax = need to read the code !!!!!!!!!!!!!
+	movl	%ecx, (%rax)		# %rax = %ecx (need to read the code)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	movb	-33(%rbp), %al		# %al = value of return boolean
+	andb	$1, %al			# Performs bitwise and operation on %al with 1, clearing all bits to 0 except for the least significant bit, which may be 1 (true) or 0 (false)
+	movzbl	%al, %eax		# %ecx = %al (most significant bits of %ecx are zero extended from %al)
+	addq	$48, %rsp		# Release stack frame by moving stack pointer 48 bytes up
+	popq	%rbp			# Pop the base pointer from the previous stack frame back into %rbp
 	.cfi_def_cfa %rsp, 8
-	retq
+	retq				# Return the function
 .Lfunc_end0:
 	.size	collatz, .Lfunc_end0-collatz
 	.cfi_endproc
@@ -73,43 +73,43 @@ collatz:
 	.type	collatz_recurse,@function
 collatz_recurse:
 	.cfi_startproc
-	pushq	%rbp
+	pushq	%rbp			# Pushes address of base pointer from previous stack frame onto the stack
 	.cfi_def_cfa_offset 16
 	.cfi_offset %rbp, -16
-	movq	%rsp, %rbp
+	movq	%rsp, %rbp		# Copies current address in stack pointer to base pointer, setting base pointer to top of the stack
 	.cfi_def_cfa_register %rbp
-	subq	$16, %rsp
-	movl	%edi, -8(%rbp)
-	cmpl	$200, array_length
-	jl	.LBB1_2
-	movb	$0, -1(%rbp)
-	jmp	.LBB1_9
+	subq	$16, %rsp		# Reserve 16 bytes for a new stack frame by moving the stack pointer -16 bytes below the base pointer
+	movl	%edi, -8(%rbp)		# Copies the 'int current' argument stored in the lower 32-bit register for the first argument to -8 bytes below the base pointer in the stack 
+	cmpl	$200, array_length	# Compares array_length to constant "200"(MAXARRAYSIZE) and sets appropriate flags depending on result, for first if condition
+	jl	.LBB1_2			# Jump to .LBB1_2 if array_length is less than 200, by checking if zero flag is not set
+	movb	$0, -1(%rbp)		# Copies "0" (false) to -1 byte below the base pointer (the boolean to be returned by the function) 
+	jmp	.LBB1_9			# Jump to .LBB1_9
 .LBB1_2:
-	movl	-8(%rbp), %edx
-	movq	array, %rax
+	movl	-8(%rbp), %edx		# %edx = current
+	movq	array, %rax		# 
 	movslq	array_length, %rcx
 	movl	%edx, (%rax,%rcx,4)
-	movl	array_length, %eax
+	movl	array_length, %eax	# %eax = array_length
 	addl	$1, %eax
 	movl	%eax, array_length
 	cmpl	$1, -8(%rbp)
-	jne	.LBB1_4
-	movb	$1, -1(%rbp)
-	jmp	.LBB1_9
+	jne	.LBB1_4			# Jump to .LBB1_4 
+	movb	$1, -1(%rbp)		# Copies "1" (true) to -1 byte below the base pointer (the boolean to be returned by the function) 
+	jmp	.LBB1_9			# Jump to .LBB1_9
 .LBB1_4:
 	movl	-8(%rbp), %eax
 	cltd
 	idivl	div
 	cmpl	$0, %edx
-	jne	.LBB1_6
+	jne	.LBB1_6			# Jump to .LBB1_6 if 
 	movl	-8(%rbp), %eax
 	cltd
 	idivl	div
 	movl	%eax, %edi
-	callq	collatz_recurse
-	andb	$1, %al
-	movb	%al, -1(%rbp)
-	jmp	.LBB1_9
+	callq	collatz_recurse		# Calls the collatz_recurse function
+	andb	$1, %al			# Performs bitwise and operation on %al with 1, clearing all bits to 0 except for the least significant bit, which may be 1 (true) or 0 (false)
+	movb	%al, -1(%rbp)		# Copies value of %al to -1 byte below base pointer (the return boolean)
+	jmp	.LBB1_9			# Jump to .LBB1_9
 .LBB1_6:
 	movl	-8(%rbp), %eax
 	movl	%eax, -12(%rbp)
@@ -121,23 +121,23 @@ collatz_recurse:
 	movl	-12(%rbp), %eax
 	cmpl	%ecx, %eax
 	jle	.LBB1_8
-	movb	$0, -1(%rbp)
-	jmp	.LBB1_9
+	movb	$0, -1(%rbp)		# Copies "0" (false) to -1 byte below the base pointer (the boolean to be returned by the function)
+	jmp	.LBB1_9			# Jump to .LBB1_9
 .LBB1_8:
 	movl	-8(%rbp), %edi
 	imull	mult, %edi
 	addl	add, %edi
-	callq	collatz_recurse
-	andb	$1, %al
-	movb	%al, -1(%rbp)
+	callq	collatz_recurse		# Calls the collatz_recurse function
+	andb	$1, %al			# Performs bitwise and operation on %al with 1, clearing all bits to 0 except for the least significant bit, which may be 1 (true) or 0 (false)
+	movb	%al, -1(%rbp)		# Copies value of %al to -1 byte below base pointer (the return boolean) 
 .LBB1_9:
-	movb	-1(%rbp), %al
-	andb	$1, %al
-	movzbl	%al, %eax
-	addq	$16, %rsp
-	popq	%rbp
+	movb	-1(%rbp), %al		# %al = value of return boolean
+	andb	$1, %al			# Performs bitwise and operation on %al with 1, clearing all bits to 0 except for the least significant bit, which may be 1 (true) or 0 (false)
+	movzbl	%al, %eax		# Sign extends %al to %eax, leaves boolean value in return register
+	addq	$16, %rsp		# Release stack frame by moving stack pointer 16 bytes up
+	popq	%rbp			# Pop the base pointer from the previous stack frame back into %rbp
 	.cfi_def_cfa %rsp, 8
-	retq
+	retq				# Return the function
 .Lfunc_end1:
 	.size	collatz_recurse, .Lfunc_end1-collatz_recurse
 	.cfi_endproc
