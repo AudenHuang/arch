@@ -80,7 +80,7 @@ collatz_recurse:
 	.cfi_def_cfa_register %rbp
 	subq	$16, %rsp		# Reserve 16 bytes for a new stack frame by moving the stack pointer -16 bytes below the base pointer
 	movl	%edi, -8(%rbp)		# Copies the 'int current' argument stored in the lower 32-bit register for the first argument to -8 bytes below the base pointer in the stack 
-	cmpl	$200, array_length	# Compares array_length to constant "200"(MAXARRAYSIZE) and sets appropriate flags depending on result, for first if condition
+	cmpl	$200, array_length	# Compares array_length to constant "200"(MAXARRAYSIZE) and sets appropriate flags depending on result (if condition on line 11 in collatz.c)
 	jl	.LBB1_2			# Jumps to .LBB1_2 if array_length is less than 200, by checking if zero flag is not set
 	movb	$0, -1(%rbp)		# Copies "0" (false) to -1 byte below the base pointer (the boolean to be returned by the function) 
 	jmp	.LBB1_9			# Jumps to .LBB1_9
