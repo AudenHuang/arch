@@ -1,4 +1,4 @@
-# Student ID: <please insert your student id here for marker's convenience>
+# Student ID: <200024536>
 # 
 # Please comment assembly code 
 # For Part 1 you are not required to comment function "collatz"
