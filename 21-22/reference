@@ -1,0 +1,17 @@
+cheat sheet https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
+	https://en.wikibooks.org/wiki/X86_Assembly/X86_Architecture
+	http://6.s081.scripts.mit.edu/sp18/x86-64-architecture-guide.html
+
+Callee saved register; https://stackoverflow.com/questions/9268586/what-are-callee-and-caller-saved-registers
+
+xorl https://stackoverflow.com/questions/23575787/xorl-eax-instruction-set-architecture-in-ia-32
+
+twstl https://en.wikipedia.org/wiki/TEST_(x86_instruction)
+
+idiv https://www.aldeid.com/wiki/X86-assembly/Instructions/idiv
+
+cltd https://stackoverflow.com/questions/17170388/trying-to-understand-the-assembly-instruction-cltd-on-x86
+
+ldrsw https://developer.arm.com/documentation/dui0801/g/A64-Data-Transfer-Instructions/LDRSW--register-
+
+lsl https://www.keil.com/support/man/docs/armasm/armasm_dom1361289876185.htm
