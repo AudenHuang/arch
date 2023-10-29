@@ -35,5 +35,5 @@ ARMv8 architecture as it relates to this code. This may include, but is not limi
 • What is the layout of the stack frames of the collatz recurse function? Do you notice any interesting differences with the stack frames you found in Part 1?
 
 ## Remark
-The comments in the files has been alighned in VSCode for the marker to view, so it might not be in alignment on Github
+The comments in the files has been aligned in VSCode for the marker to view, so it might not be in alignment on Github
 
